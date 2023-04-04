@@ -192,8 +192,8 @@ void *board_composite_connect(int port, int configid)
     {
       struct composite_devdesc_s dev[2];
       int ifnobase = 0;
-      int strbase  = COMPOSITE_NSTRIDS;
-      int n = 0;
+      int strbase = COMPOSITE_NSTRIDS;
+      int dev_idx = 0;
 
 #ifdef CONFIG_USBMSC_COMPOSITE
       /* Configure the mass storage device device */
@@ -202,33 +202,33 @@ void *board_composite_connect(int port, int configid)
        * know here.
        */
 
-      usbmsc_get_composite_devdesc(&dev[n]);
+      usbmsc_get_composite_devdesc(&dev[dev_idx]);
 
       /* Overwrite and correct some values... */
 
       /* The callback functions for the USBMSC class */
 
-      dev[n].classobject  = board_mscclassobject;
-      dev[n].uninitialize = board_mscuninitialize;
+      dev[dev_idx].classobject  = board_mscclassobject;
+      dev[dev_idx].uninitialize = board_mscuninitialize;
 
       /* Interfaces */
 
-      dev[n].devinfo.ifnobase = ifnobase;               /* Offset to Interface-IDs */
-      dev[n].minor = 0;                                 /* The minor interface number */
+      dev[dev_idx].devinfo.ifnobase = ifnobase; /* Offset to Interface-IDs */
+      dev[dev_idx].minor = 0;                   /* The minor interface number */
 
       /* Strings */
 
-      dev[n].devinfo.strbase = strbase;                 /* Offset to String Numbers */
+      dev[dev_idx].devinfo.strbase = strbase;   /* Offset to String Numbers */
 
       /* Endpoints */
 
-      dev[n].devinfo.epno[USBMSC_EP_BULKIN_IDX]  = 3;
-      dev[n].devinfo.epno[USBMSC_EP_BULKOUT_IDX] = 3;
+      dev[dev_idx].devinfo.epno[USBMSC_EP_BULKIN_IDX]  = 3;
+      dev[dev_idx].devinfo.epno[USBMSC_EP_BULKOUT_IDX] = 3;
 
       /* Count up the base numbers */
 
-      ifnobase += dev[n].devinfo.ninterfaces;
-      strbase  += dev[n].devinfo.nstrings;
+      ifnobase += dev[dev_idx].devinfo.ninterfaces;
+      strbase  += dev[dev_idx].devinfo.nstrings;
       n++;
 #endif
 
@@ -239,29 +239,29 @@ void *board_composite_connect(int port, int configid)
        * know here.
        */
 
-      cdcacm_get_composite_devdesc(&dev[n]);
+      cdcacm_get_composite_devdesc(&dev[dev_idx]);
 
       /* Overwrite and correct some values... */
 
       /* The callback functions for the CDC/ACM class */
 
-      dev[n].classobject  = cdcacm_classobject;
-      dev[n].uninitialize = cdcacm_uninitialize;
+      dev[dev_idx].classobject  = cdcacm_classobject;
+      dev[dev_idx].uninitialize = cdcacm_uninitialize;
 
       /* Interfaces */
 
-      dev[n].devinfo.ifnobase = ifnobase;             /* Offset to Interface-IDs */
-      dev[n].minor = 0;                               /* The minor interface number */
+      dev[dev_idx].devinfo.ifnobase = ifnobase; /* Offset to Interface-IDs */
+      dev[dev_idx].minor = 0;                   /* The minor interface number */
 
       /* Strings */
 
-      dev[n].devinfo.strbase = strbase;               /* Offset to String Numbers */
+      dev[dev_idx].devinfo.strbase = strbase;   /* Offset to String Numbers */
 
       /* Endpoints */
 
-      dev[n].devinfo.epno[CDCACM_EP_INTIN_IDX]   = 1;
-      dev[n].devinfo.epno[CDCACM_EP_BULKIN_IDX]  = 2;
-      dev[n].devinfo.epno[CDCACM_EP_BULKOUT_IDX] = 2;
+      dev[dev_idx].devinfo.epno[CDCACM_EP_INTIN_IDX]   = 1;
+      dev[dev_idx].devinfo.epno[CDCACM_EP_BULKIN_IDX]  = 2;
+      dev[dev_idx].devinfo.epno[CDCACM_EP_BULKOUT_IDX] = 2;
       n++;
 #endif
 
