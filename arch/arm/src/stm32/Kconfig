@@ -11088,6 +11088,15 @@ config STM32_USBFS_REGDEBUG
 
 endmenu
 
+menu "USB OTG Device Debug Configuration"
+
+config STM32_USBDEV_REGDEBUG
+	bool "Register-Level Debug for OTG in Device mode"
+	default n
+	depends on USBDEV && DEBUG_USB_INFO
+
+endmenu
+
 menu "OTG Configuration"
 	depends on STM32_OTGFS
 
