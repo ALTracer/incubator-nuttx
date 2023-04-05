@@ -5362,9 +5362,11 @@ static void stm32_hwinitialize(struct stm32_usbdev_s *priv)
    * Sense when Set
    */
 
-  regval  = (OTGFS_GCCFG_PWRDWN | OTGFS_GCCFG_VBUSASEN |
-             OTGFS_GCCFG_VBUSBSEN);
-# ifndef CONFIG_USBDEV_VBUSSENSING
+  regval  = OTGFS_GCCFG_PWRDWN;
+
+# ifdef CONFIG_USBDEV_VBUSSENSING
+  regval |= OTGFS_GCCFG_VBUSBSEN;
+# else
   regval |= OTGFS_GCCFG_NOVBUSSENS;
 # endif
 # ifdef CONFIG_STM32_OTGFS_SOFOUTPUT
